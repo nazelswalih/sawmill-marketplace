@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Tim-X{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4">Welcome to Tim-X</h1>
+    <p class="lead">The best place to buy and sell timber.</p>
+
+    <div class="my-5">
+        <h3>Find Timber</h3>
+        <form action="{% url 'product_list' %}" method="get" class="input-group mb-3 w-50 mx-auto">
+            <input type="text" name="q" class="form-control" placeholder="Search by species, dimensions..."
+                aria-label="Search">
+            <button class="btn btn-secondary" type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">For Buyers</h5>
+                    <p class="card-text">Find the perfect wood for your projects. Request quotes easily.</p>
+                    <a href="{% url 'register' %}" class="btn btn-primary">Join as Buyer</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">For Sellers</h5>
+                    <p class="card-text">List your inventory and reach more customers.</p>
+                    <a href="{% url 'register' %}" class="btn btn-primary">Join as Seller</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Logistics</h5>
+                    <p class="card-text">Track your orders and manage deliveries.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

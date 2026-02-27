@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Seller Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action active">Overview</a>
+            <a href="{% url 'inventory_list' %}" class="list-group-item list-group-item-action">My Inventory</a>
+            <a href="{% url 'volume_calculator' %}" class="list-group-item list-group-item-action">Volume Calculator</a>
+            <a href="{% url 'profile_edit' %}" class="list-group-item list-group-item-action">Edit Profile</a>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <h2>Seller Portal</h2>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">Quick Actions</h5>
+                        <a href="{% url 'product_add' %}" class="btn btn-primary">Add Product</a>
+                        <a href="{% url 'volume_calculator' %}" class="btn btn-primary">Calculator</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4 class="mt-4">Incoming RFQs</h4>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Buyer</th>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rfq in rfqs %}
+                <tr>
+                    <td>{{ rfq.buyer.username }}</td>
+                    <td>{{ rfq.product }}</td>
+                    <td>{{ rfq.quantity }}</td>
+                    <td>
+                        <span
+                            class="badge {% if rfq.status == 'APPROVED' %}bg-success{% elif rfq.status == 'REJECTED' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
+                            {{ rfq.get_status_display }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if rfq.status == 'PENDING' %}
+                        <a href="{% url 'rfq_action' rfq.id 'approve' %}" class="btn btn-sm btn-success">Approve</a>
+                        <a href="{% url 'rfq_action' rfq.id 'reject' %}" class="btn btn-sm btn-danger">Reject</a>
+                        {% else %}
+                        <span class="text-muted">No actions</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No pending requests.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h4 class="mt-4">My Listings (Overview)</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Species</th>
+                    <th>Dimensions</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products|slice:":5" %}
+                <tr>
+                    <td>{{ product }}</td>
+                    <td>{{ product.species }}</td>
+                    <td>{{ product.dimensions }}</td>
+                    <td>${{ product.price_per_unit }}</td>
+                    <td>{{ product.is_active|yesno:"Active,Inactive" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No listings yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if products %}
+        <a href="{% url 'inventory_list' %}" class="btn btn-sm btn-secondary">View All Inventory</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

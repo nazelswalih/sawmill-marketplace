@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Tim-X{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-coffee: #5D4037;
+            --secondary-coffee: #8D6E63;
+            --light-coffee: #D7CCC8;
+            --bg-coffee: #EFEBE9;
+            --text-coffee: #3E2723;
+            --accent-coffee: #A1887F;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: var(--bg-coffee);
+            color: var(--text-coffee);
+            font-family: 'Inter', sans-serif;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        /* Navbar & Footer */
+        .navbar,
+        .footer {
+            background-color: var(--primary-coffee) !important;
+        }
+
+        .navbar-brand,
+        .nav-link,
+        .footer,
+        .footer p {
+            color: var(--light-coffee) !important;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--secondary-coffee);
+            border-color: var(--secondary-coffee);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-coffee);
+            border-color: var(--primary-coffee);
+        }
+
+        .btn-success {
+            background-color: #6D4C41;
+            /* Darker coffee for variety */
+            border-color: #6D4C41;
+        }
+
+        .btn-success:hover {
+            background-color: #5D4037;
+            border-color: #5D4037;
+        }
+
+        /* Cards */
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: var(--secondary-coffee) !important;
+            color: white !important;
+            border-bottom: none;
+        }
+
+        .bg-primary {
+            background-color: var(--secondary-coffee) !important;
+        }
+
+        .bg-success {
+            background-color: #6D4C41 !important;
+        }
+
+        .bg-warning {
+            background-color: #A1887F !important;
+            /* Lighter brown/accent */
+            color: white !important;
+        }
+
+        .list-group-item.active {
+            background-color: var(--secondary-coffee);
+            border-color: var(--secondary-coffee);
+        }
+
+        a {
+            color: var(--primary-coffee);
+        }
+
+        a:hover {
+            color: var(--secondary-coffee);
+        }
+
+        /* Tabs */
+        .nav-tabs .nav-link {
+            color: var(--primary-coffee);
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-coffee);
+            font-weight: bold;
+            border-bottom: 3px solid var(--primary-coffee);
+        }
+
+        /* Form Controls */
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--secondary-coffee);
+            box-shadow: 0 0 0 0.25rem rgba(141, 110, 99, 0.25);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/">Tim-X</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    {% if user.role == 'ADMIN' or user.is_superuser %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/">Django Admin</a></li>
+                    {% elif user.role == 'SELLER' %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'seller_dashboard' %}">Seller Portal</a></li>
+                    {% elif user.role == 'BUYER' %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'buyer_dashboard' %}">Buyer Portal</a></li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link btn btn-link" style="text-decoration: none;">Logout
+                                ({{ user.username }})</button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-4">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <div class="container">
+            <p>&copy; 2026 Tim-X. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

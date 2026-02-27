@@ -1,0 +1,112 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static " admin/css/dashboard.css" %}">
+{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    {% if app_list %}
+    <div class="admin-dashboard-grid">
+        {% for app in app_list %}
+        <div class="app-card module">
+            <div class="app-card-header">
+                <a href="{{ app.app_url }}" class="section"
+                    title="{% blocktranslate with name=app.name %}Models in the {{ name }} application{% endblocktranslate %}">
+                    {{ app.name }}
+                </a>
+            </div>
+            <div class="app-card-body">
+                <ul class="model-list">
+                    {% for model in app.models %}
+                    <li class="model-item">
+                        {% if model.admin_url %}
+                        <a href="{{ model.admin_url }}" class="model-link">{{ model.name }}</a>
+                        {% else %}
+                        <span class="model-name">{{ model.name }}</span>
+                        {% endif %}
+
+                        <div class="model-actions">
+                            {% if model.add_url %}
+                            <a href="{{ model.add_url }}" class="add-link btn-admin-add"
+                                title="{% translate 'Add' %}">Add</a>
+                            {% endif %}
+                            {% if model.admin_url %}
+                            <a href="{{ model.admin_url }}" class="change-link btn-admin-edit"
+                                title="{% translate 'Change' %}">Edit</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Custom Modules Card -->
+        <div class="app-card module">
+            <div class="app-card-header">
+                <a href="#" class="section">Custom Modules</a>
+            </div>
+            <div class="app-card-body">
+                <ul class="model-list">
+                    <li class="model-item">
+                        <a href="{% url 'admin_dashboard' %}" class="model-link">Main Dashboard</a>
+                    </li>
+                    <li class="model-item">
+                        <a href="{% url 'manage_resources' %}" class="model-link">Manage Resources</a>
+                    </li>
+                    <li class="model-item">
+                        <a href="{% url 'admin_transaction_list' %}" class="model-link">Transactions</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    {% else %}
+    <p>{% translate "You don't have permission to view or edit anything." %}</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>{% translate 'Recent actions' %}</h2>
+        <h3>{% translate 'My actions' %}</h3>
+        {% load log %}
+        {% get_admin_log 10 as admin_log for_user user %}
+        {% if admin_log %}
+        <ul class="action-list">
+            {% for entry in admin_log %}
+            <li
+                class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                {% if entry.is_deletion or not entry.get_admin_url %}
+                {{ entry.object_repr }}
+                {% else %}
+                <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                {% endif %}
+                <br>
+                {% if entry.content_type %}
+                <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
+                {% else %}
+                <span class="mini quiet">{% translate 'Unknown content' %}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

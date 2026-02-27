@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action active">Overview</a>
+            <a href="{% url 'verify_users' %}" class="list-group-item list-group-item-action">Verify Users</a>
+            <a href="{% url 'manage_resources' %}" class="list-group-item list-group-item-action">Manage Resources</a>
+            <a href="{% url 'admin_transaction_list' %}" class="list-group-item list-group-item-action">Transactions</a>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <h2>Admin Dashboard</h2>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-header">Total Users</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_users }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-header">Active Listings</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ active_listings }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-header">Pending Verification</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ pending_verification }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4 class="mt-4">Recent Activity</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>User/Item</th>
+                    <th>Action</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for activity in recent_activity %}
+                <tr>
+                    <td>
+                        {% if activity.username %}
+                        {{ activity.username }}
+                        {% elif activity.species %}
+                        {{ activity.species }} - {{ activity.dimensions }}
+                        {% elif activity.product %}
+                        RFQ for {{ activity.product.species }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if activity.date_joined %}
+                        Joined
+                        {% elif activity.species %}
+                        New Listing
+                        {% elif activity.product %}
+                        New RFQ
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if activity.date_joined %}
+                        {{ activity.date_joined|timesince }} ago
+                        {% else %}
+                        {{ activity.created_at|timesince }} ago
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No recent activity.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

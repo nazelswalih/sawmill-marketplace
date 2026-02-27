@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Volume Calculator{% endblock %}
+
+{% block content %}
+<h2>Board Feet Calculator</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-3">
+            <label>Length (ft)</label>
+            <input type="number" name="length" class="form-control" step="0.1" required>
+        </div>
+        <div class="col-md-3">
+            <label>Width (in)</label>
+            <input type="number" name="width" class="form-control" step="0.1" required>
+        </div>
+        <div class="col-md-3">
+            <label>Thickness (in)</label>
+            <input type="number" name="thickness" class="form-control" step="0.1" required>
+        </div>
+        <div class="col-md-3">
+            <label>Quantity</label>
+            <input type="number" name="quantity" class="form-control" value="1" required>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Calculate</button>
+</form>
+
+{% if result is not None %}
+<div class="alert alert-success mt-4">
+    <h4>Result: {{ result }} Board Feet</h4>
+</div>
+{% endif %}
+<a href="{% url 'seller_dashboard' %}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+{% endblock %}

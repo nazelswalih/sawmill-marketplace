@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Browse Timber{% endblock %}
+
+{% block content %}
+<h2>Browse Timber</h2>
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">Filters</div>
+            <div class="card-body">
+                <form id="filter-form">
+                    <div class="mb-3">
+                        <label>Search</label>
+                        <input type="text" name="q" class="form-control" placeholder="Species, sizes..."
+                            oninput="updateFilters()">
+                    </div>
+                    <div class="mb-3">
+                        <label>Species</label>
+                        <select name="species" class="form-select" onchange="updateFilters()">
+                            <option value="">All Species</option>
+                            {% for s in species_list %}
+                            <option value="{{ s.id }}">{{ s.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Category</label>
+                        <select name="category" class="form-select" onchange="updateFilters()">
+                            <option value="">All Categories</option>
+                            {% for c in categories %}
+                            <option value="{{ c.id }}">{{ c.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Max Price</label>
+                        <input type="number" name="max_price" class="form-control" oninput="updateFilters()">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9" id="product-grid">
+        {% include 'buyer/product_list_partial.html' %}
+    </div>
+</div>
+
+<script>
+    let debounceTimer;
+    function updateFilters() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const form = document.getElementById('filter-form');
+            const formData = new FormData(form);
+            const searchParams = new URLSearchParams(formData);
+
+            fetch(`{% url 'product_list' %}?${searchParams.toString()}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('product-grid').innerHTML = html;
+                });
+        }, 300);
+    }
+</script>
+{% endblock %}

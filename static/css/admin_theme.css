@@ -1,0 +1,262 @@
+:root {
+    --primary-coffee: #5D4037;
+    --secondary-coffee: #8D6E63;
+    --light-coffee: #D7CCC8;
+    --bg-coffee: #EFEBE9;
+    --text-coffee: #3E2723;
+    --accent-coffee: #A1887F;
+    --header-color: #5D4037;
+    --link-color: #5D4037;
+    --selected-row: #EFEBE9;
+    --button-bg: #8D6E63;
+    /* Django Admin Variables Override */
+    --header-bg: #5D4037;
+    --header-color: #fff;
+    --primary: #5D4037;
+    --secondary: #8D6E63;
+    --accent: #A1887F;
+}
+
+[data-theme="light"] {
+    --header-bg: #5D4037;
+    --header-color: #fff;
+    --primary: #5D4037;
+}
+
+/* Header */
+#header {
+    background: var(--header-color);
+    color: #fff;
+}
+
+#branding h1 {
+    color: #fff;
+}
+
+/* Modules / Content */
+.module h2,
+.module caption,
+.inline-group h2 {
+    background: var(--secondary-coffee);
+}
+
+a:link,
+a:visited {
+    color: var(--link-color);
+}
+
+div.breadcrumbs {
+    background: var(--secondary-coffee);
+    color: #fff;
+}
+
+div.breadcrumbs a {
+    color: #f0f0f0;
+}
+
+/* Buttons */
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button {
+    background: var(--button-bg);
+    color: #fff;
+}
+
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover {
+    background: var(--primary-coffee);
+}
+
+.button.default,
+input[type=submit].default,
+.submit-row input.default {
+    background: var(--primary-coffee);
+}
+
+/* Tables */
+#changelist table thead th {
+    background: var(--secondary-coffee);
+    color: #fff;
+}
+
+#changelist table thead th a {
+    color: #fff;
+}
+
+tr.selected {
+    background: var(--selected-row);
+}
+
+/* Dashboard */
+.dashboard .module table th {
+    width: 100%;
+}
+
+.dashboard .module table td a {
+    color: var(--text-coffee);
+    font-weight: bold;
+}
+
+/* Custom Dashboard Grid */
+.admin-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.app-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.app-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.app-card-header {
+    background: var(--secondary-coffee);
+    padding: 15px;
+}
+
+.app-card-header a {
+    color: #fff !important;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.model-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.model-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.model-item:last-child {
+    border-bottom: none;
+}
+
+.model-link {
+    color: var(--text-coffee);
+    font-weight: 500;
+    text-decoration: none;
+    flex-grow: 1;
+}
+
+.model-link:hover {
+    color: var(--primary-coffee);
+}
+
+.model-actions a {
+    margin-left: 10px;
+    color: #999;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.model-actions a:hover {
+    color: var(--primary-coffee);
+}
+
+.model-actions .add-link {
+    color: var(--secondary-coffee);
+}
+
+/* Recent Actions Sidebar */
+#recent-actions-module {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#recent-actions-module h2 {
+    background: var(--primary-coffee);
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 0;
+}
+
+.action-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.action-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.mini.quiet {
+    color: #888;
+    font-size: 0.85em;
+}
+
+/* Custom Admin Buttons */
+.btn-admin-add,
+.btn-admin-edit {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn-admin-add {
+    color: #fff;
+    background-color: var(--secondary-coffee);
+    border-color: var(--secondary-coffee);
+}
+
+.btn-admin-add:hover {
+    color: #fff;
+    background-color: var(--primary-coffee);
+    border-color: var(--primary-coffee);
+}
+
+.btn-admin-edit {
+    color: var(--primary-coffee);
+    border-color: var(--secondary-coffee);
+    background-color: transparent;
+}
+
+.btn-admin-edit:hover {
+    color: #fff;
+    background-color: var(--secondary-coffee);
+    border-color: var(--secondary-coffee);
+}
+
+/* Force Navbar Color in Light Mode / Global Override */
+#header {
+    background: #5D4037 !important;
+    color: #fff !important;
+}
+
+div.breadcrumbs {
+    background: #8D6E63 !important;
+}

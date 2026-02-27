@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Buyer Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action active">Overview</a>
+            <a href="{% url 'product_list' %}" class="list-group-item list-group-item-action">Search Timber</a>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <h2>Buyer Portal</h2>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Find Timber</h5>
+                <p>Search our marketplace for the best timber.</p>
+                <form action="{% url 'product_list' %}" method="get" class="d-flex">
+                    <input type="text" name="q" class="form-control me-2" placeholder="Search...">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <h4 class="mt-4">My RFQs</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rfq in rfqs %}
+                <tr>
+                    <td>
+                        <a href="{% url 'product_detail' rfq.product.id %}">{{ rfq.product }}</a>
+                    </td>
+                    <td>{{ rfq.quantity }}</td>
+                    <td>
+                        <span
+                            class="badge {% if rfq.status == 'APPROVED' %}bg-success{% elif rfq.status == 'REJECTED' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
+                            {{ rfq.get_status_display }}
+                        </span>
+                    </td>
+                    <td>{{ rfq.created_at|date:"M d, Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No RFQs sent yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
