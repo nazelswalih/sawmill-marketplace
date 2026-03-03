@@ -64,3 +64,24 @@ To deploy the Sawmill Marketplace to a production environment, follow these step
 4. Deploy the application to a cloud platform (e.g., AWS, Heroku) or a virtual private server (VPS).
 
 Note: This is a high-level overview of the deployment process. For detailed instructions, consult the official Django documentation and the documentation for your chosen deployment platform.
+
+## Project Structure
+------------------
+
+The project is structured into the following apps:
+
+* `buyer`: Handles buyer-related functionality, including product browsing and quote requests.
+* `core`: Provides core functionality, including user authentication and dashboard views.
+* `sawmill`: Handles seller-related functionality, including inventory management and quote responses.
+
+## Contributing
+------------
+
+To contribute to the Sawmill Marketplace project, please follow these steps:
+
+1. Fork the repository on GitHub.
+2. Create a new branch for your feature or bug fix.
+3. Commit your changes and push them to your fork.
+4. Submit a pull request to the main repository.
+
+Please ensure that your code follows the project's coding standards and includes tests for any new functionality.
