@@ -85,3 +85,53 @@ To contribute to the Sawmill Marketplace project, please follow these steps:
 4. Submit a pull request to the main repository.
 
 Please ensure that your code follows the project's coding standards and includes tests for any new functionality.
+
+## Code Examples
+--------------
+
+### Buyer Views
+
+The `buyer` app contains views for product browsing and quote requests. For example, the `product_list` view filters products based on user input:
+```python
+def product_list(request):
+    products = Product.objects.filter(is_active=True)
+    # ...
+    if query:
+        products = products.filter(
+            Q(species__name__icontains=query) |
+            Q(dimensions__icontains=query) |
+            Q(grade__name__icontains=query)
+        )
+    # ...
+    return render(request, 'buyer/product_list.html', {'products': products})
+```
+### Seller Views
+
+The `sawmill` app contains views for inventory management and quote responses. For example, the `inventory_list` view displays a list of products for the seller:
+```python
+def inventory_list(request):
+    products = Product.objects.filter(seller=request.user)
+    return render(request, 'sawmill/inventory_list.html', {'products': products})
+```
+### Models
+
+The project uses Django models to represent data in the database. For example, the `Product` model represents a wood product:
+```python
+class Product(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    price_per_unit = models.DecimalField(max_digits=10, decimal_places=2)
+    # ...
+```
+### Forms
+
+The project uses Django forms to handle user input. For example, the `RFQForm` form handles quote requests:
+```python
+class RFQForm(forms.ModelForm):
+    class Meta:
+        model = RFQ
+        fields = ['quantity', 'message']
+        widgets = {
+            'message': forms.Textarea(attrs={'rows': 4}),
+        }
+```
